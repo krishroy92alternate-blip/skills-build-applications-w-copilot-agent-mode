@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from octofit_tracker.models import User, Team, Activity, Leaderboard, Workout
+from tracker.models import User, Team, Activity, Leaderboard, Workout
 
 
 class Command(BaseCommand):

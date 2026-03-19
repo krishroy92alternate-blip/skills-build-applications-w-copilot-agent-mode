@@ -26,10 +26,15 @@ SECRET_KEY = 'django-insecure-@e7_&2k96giz@e%gb72o9&m2)@_v3r8af1kvk$lx&x*jx6va_2
 DEBUG = True
 
 import os
-# Configure ALLOWED_HOSTS for localhost and codespace
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+# Configure ALLOWED_HOSTS for localhost, codespace, and all hosts
+ALLOWED_HOSTS = ['*', 'localhost', '127.0.0.1']
 if os.environ.get('CODESPACE_NAME'):
     ALLOWED_HOSTS.append(f"{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
+
+# CSRF trusted origins for codespace and localhost
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
+if os.environ.get('CODESPACE_NAME'):
+    CSRF_TRUSTED_ORIGINS.append(f"https://{os.environ.get('CODESPACE_NAME')}-8000.app.github.dev")
 
 
 # Application definition
@@ -45,6 +50,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djongo',
     'corsheaders',
+    'octofit_tracker',
     'tracker',
 ]
 
@@ -137,8 +143,25 @@ STATIC_URL = 'static/'
 # CORS settings
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_HEADERS = ['*']
-CORS_ALLOW_METHODS = ['*']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
